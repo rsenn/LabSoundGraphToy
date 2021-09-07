@@ -122,6 +122,9 @@ target_compile_definitions(sokol PRIVATE
     USE_DBG_UI
 )
 
+set_property(TARGET sokol PROPERTY CXX_STANDARD 14)
+
+
 if(APPLE)
     set_source_files_properties(src/sokol.cpp PROPERTIES COMPILE_FLAGS "-x objective-c++ -fobjc-arc")
 endif()

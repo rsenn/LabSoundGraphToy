@@ -172,10 +172,10 @@ void init(void) {
 
     // initial clear color
     pass_action.colors[0].action = SG_ACTION_CLEAR;
-    pass_action.colors[0].val[0] = 0.0f;
-    pass_action.colors[0].val[1] = 0.5f;
-    pass_action.colors[0].val[2] = 0.7f;
-    pass_action.colors[0].val[3] = 1.0f;
+    pass_action.colors[0].value.r = 0.0f;
+    pass_action.colors[0].value.g = 0.5f;
+    pass_action.colors[0].value.b = 0.7f;
+    pass_action.colors[0].value.a = 1.0f;
 
     ImGuiIO & io = ImGui::GetIO();
 
@@ -211,8 +211,8 @@ void init(void) {
     img_desc.wrap_v = SG_WRAP_CLAMP_TO_EDGE;
     img_desc.min_filter = SG_FILTER_LINEAR;
     img_desc.mag_filter = SG_FILTER_LINEAR;
-    img_desc.content.subimage[0][0].ptr = font_pixels;
-    img_desc.content.subimage[0][0].size = font_width * font_height * 4;
+    img_desc.data.subimage[0][0].ptr = font_pixels;
+    img_desc.data.subimage[0][0].size = font_width * font_height * 4;
     io.Fonts->TexID = (ImTextureID)(uintptr_t) sg_make_image(&img_desc).id;
 
     ImGuiStyle& style = ImGui::GetStyle();
