@@ -143,14 +143,15 @@ set(PLAYGROUND_SHADERS
 #    simple_cube instancing billboard_instances
 )
 
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated_src)
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/generated_src)")
+
 foreach(SHADER ${PLAYGROUND_SHADERS})
     add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/generated_src/${SHADER}_glsl.h
-        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/third/sokol-tools-bin/bin/win32/sokol-shdc.exe --input ${CMAKE_CURRENT_SOURCE_DIR}/src/${SHADER}.glsl --output ${CMAKE_CURRENT_BINARY_DIR}/generated_src/${SHADER}_glsl.h --slang glsl330:hlsl5:metal_macos
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/generated_src/${SHADER}_glsl.h"
+        COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/third/sokol-tools-bin/bin/win32/sokol-shdc.exe" --input "${CMAKE_CURRENT_SOURCE_DIR}/src/${SHADER}.glsl" --output "${CMAKE_CURRENT_BINARY_DIR}/generated_src/${SHADER}_glsl.h" --slang glsl330:hlsl5:metal_macos
         COMMENT "Running sokol-shdc for ${SHADER}.glsl"
     )
-    list(APPEND PLAYGROUND_SHADERS_SRC ${CMAKE_CURRENT_BINARY_DIR}/generated_src/${SHADER}_glsl.h)
+    list(APPEND PLAYGROUND_SHADERS_SRC "${CMAKE_CURRENT_BINARY_DIR}/generated_src/${SHADER}_glsl.h")
 endforeach()
 add_custom_target(ProcessPlaygroundShaderFiles ALL DEPENDS ${PLAYGROUND_SHADERS_SRC})
 
@@ -181,12 +182,12 @@ target_compile_definitions(LabSoundGraphToy PRIVATE
 target_include_directories(LabSoundGraphToy SYSTEM
     PRIVATE third/imgui
     PRIVATE third/LabSound/include
-    PRIVATE ${RAPIDJSON_INCL}
+    PRIVATE "${RAPIDJSON_INCL}"
     PRIVATE third/entt/single_include)
 
 target_include_directories(LabSoundGraphToy
-    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/generated_src
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+    PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated_src"
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
     PRIVATE third/imgui/examples)
 
 set_property(TARGET LabSoundGraphToy PROPERTY CXX_STANDARD 17)
@@ -214,59 +215,16 @@ elseif (APPLE)
 #    endif()
 endif()
 
-# In order to use the LabSound Registry, and LabSound as a static library,
-# whole archive needs to be specified in order not to deadstrip the static
-# initializers.
-# Unfortunately, the developers of cmake have yet to agree that a
-# whole archive flag is in order, and so this terrible contraption is
-# necessary.
-#
-if(MSVC)
-    target_link_libraries(LabSoundGraphToy
-        ${PLATFORM_LIBS}
-        imgui
-        libnyquist
-        samplerate
-        Lab::Midi
-        Tiny::OSC
-        sokol    
-        -WHOLEARCHIVE:$<TARGET_FILE:Lab::Sound>
-        )
-elseif(CMAKE_COMPILER_IS_GNUCXX)
-    target_link_libraries(LabSoundGraphToy
-        ${PLATFORM_LIBS}
-        imgui
-        libnyquist
-        samplerate
-        Lab::Midi
-        Tiny::OSC
-        sokol
-        -Wl,--whole-archive $<TARGET_FILE:Lab::Sound> -Wl,--no-whole-archive
-        )
-elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-    target_link_libraries(LabSoundGraphToy
-        ${PLATFORM_LIBS}
-        imgui
-        libnyquist
-        samplerate
-        Lab::Midi
-        Tiny::OSC
-        sokol
-        Lab::Sound
-        )
-else()
-    target_link_libraries(LabSoundGraphToy
-        ${PLATFORM_LIBS}
-        imgui
-        libnyquist
-        samplerate
-        Lab::Sound
-        Lab::Midi
-        Tiny::OSC
-        sokol
-        )
-endif()
-
+target_link_libraries(LabSoundGraphToy
+    ${PLATFORM_LIBS}
+    imgui
+    libnyquist
+    samplerate
+    Lab::Midi
+    Tiny::OSC
+    sokol
+    Lab::Sound    
+    )
 
 #-------------------------------------------------------------------------------
 # Installer
@@ -283,7 +241,8 @@ install(
     FILES
         resources/fontaudio.ttf
         resources/preview.png
-    DESTINATION bin/LabSoundGraphToy_rsrc/)
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/LabSoundGraphToy_rsrc/"
+)
 
 install(
     FILES
