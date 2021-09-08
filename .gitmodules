@@ -1,6 +1,6 @@
 [submodule "third/LabSound"]
 	path = third/LabSound
-	url = git@github.com:LabSound/LabSound.git
+	url = https://github.com/LabSound/LabSound.git
 [submodule "third/imgui"]
 	path = third/imgui
 	url = https://github.com/ocornut/imgui.git
@@ -9,10 +9,13 @@
 	url = https://github.com/floooh/sokol.git
 [submodule "third/LabMidi"]
 	path = third/LabMidi
-	url = git@github.com:meshula/LabMidi.git
+	url = https://github.com/meshula/LabMidi.git
 [submodule "third/tinyosc"]
 	path = third/tinyosc
-	url = git@github.com:ddiakopoulos/tinyosc.git
+	url = https://github.com/ddiakopoulos/tinyosc.git
 [submodule "third/rapidjson"]
 	path = third/rapidjson
 	url = https://github.com/Tencent/rapidjson.git
+[submodule "third/CLI11"]
+	path = third/CLI11
+	url = https://github.com/CLIUtils/CLI11.git
