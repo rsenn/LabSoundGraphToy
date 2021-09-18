@@ -159,9 +159,18 @@ endforeach()
 add_custom_target(ProcessPlaygroundShaderFiles ALL DEPENDS ${PLAYGROUND_SHADERS_SRC})
 
 if(APPLE)
-    set(NFD src/nfd.h src/nfd.mm)
+    set(NFD third/nativefiledialog/include/nfd.h 
+        third/nativefiledialog/nfd_cocoa_arc.m third/nativefiledialog/nfd_common.c
+        third/nativefiledialog/nfd_common.h)
+elseif(WIN32)
+    set(NFD third/nativefiledialog/include/nfd.h 
+        third/nativefiledialog/nfd_win.cpp third/nativefiledialog/nfd_common.c
+        third/nativefiledialog/nfd_common.h)
 else()
-    set(NFD src/nfd.h src/nfd.cc)
+    # nb: there is a zenity variant, but haven't had a call for it yet
+    set(NFD third/nativefiledialog/include/nfd.h
+        third/nativefiledialog/nfd_gtk.cpp third/nativefiledialog/nfd_common.c
+        third/nativefiledialog/nfd_common.h)
 endif()
 
 add_executable(LabSoundGraphToy
@@ -191,6 +200,7 @@ target_include_directories(LabSoundGraphToy SYSTEM
 target_include_directories(LabSoundGraphToy
     PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated_src"
     PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/third/nativefiledialog/include"
     PRIVATE third/imgui/examples)
 
 set_property(TARGET LabSoundGraphToy PROPERTY CXX_STANDARD 17)

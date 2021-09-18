@@ -817,7 +817,8 @@ namespace noodle {
             {
                 if (ImGui::Button("Load Audio File..."))
                 {
-                    const char* file = noc_file_dialog_open(NOC_FILE_DIALOG_OPEN, "*.*", ".", "*.*");
+                    char* file = nullptr;
+                    nfdresult_t open_result = NFD_OpenDialog("", "", &file);
                     if (file)
                     {
                         {

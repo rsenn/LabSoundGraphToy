@@ -307,7 +307,8 @@ void frame()
             {
                 if (ImGui::Button("Save and Quit"))
                 {
-                    const char* file = noc_file_dialog_open(NOC_FILE_DIALOG_SAVE, "*.ls", ".", "*.*");
+                    char* file = nullptr;
+                    nfdresult_t result = NFD_SaveDialog("*.ls", "", &file);
                     if (file)
                     {
                         config.save(file);
@@ -345,7 +346,8 @@ void frame()
             {
                 if (ImGui::Button("Save work in progress"))
                 {
-                    const char* file = noc_file_dialog_open(NOC_FILE_DIALOG_SAVE, "*.ls", ".", "*.*");
+                    char* file = nullptr;
+                    nfdresult_t result = NFD_SaveDialog("*.ls", "", &file);
                     if (file)
                     {
                         config.save(file);
@@ -377,7 +379,8 @@ void frame()
 
     case Command::Save:
     {
-        const char* file = noc_file_dialog_open(NOC_FILE_DIALOG_SAVE, "*.ls\0", ".", "*.*");
+        char* file = nullptr;
+        nfdresult_t result = NFD_SaveDialog("*.ls", "", &file);
         if (file)
         {
             config.save(file);
@@ -388,7 +391,8 @@ void frame()
             
     case Command::ExportCpp:
     {
-        const char* file = noc_file_dialog_open(NOC_FILE_DIALOG_SAVE, "*.cpp\0", ".", "*.*");
+        char* file = nullptr;
+        nfdresult_t result = NFD_SaveDialog("*.cpp", "", &file);
         if (file)
         {
             config.export_cpp(file);
@@ -405,7 +409,8 @@ void frame()
             {
                 if (ImGui::Button("Save work in progress?"))
                 {
-                    const char* file = noc_file_dialog_open(NOC_FILE_DIALOG_SAVE, "*.ls", ".", "*.*");
+                    char* file = nullptr;
+                    nfdresult_t result = NFD_SaveDialog("*.ls", "", &file);
                     if (file)
                     {
                         config.save(file);
@@ -431,7 +436,8 @@ void frame()
         {
             command = Command::None;
         }
-        const char* file = noc_file_dialog_open(NOC_FILE_DIALOG_OPEN, "*.ls", ".", "*.*");
+        char* file = nullptr;
+        nfdresult_t result = NFD_OpenDialog("*.ls", "", &file);
         if (file)
         {
             config.clear_all();

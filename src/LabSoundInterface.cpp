@@ -424,17 +424,25 @@ void LabSoundProvider::node_start_stop(ln_Node node_id, float when)
     if (!in_node)
         return;
 
-    lab::AudioScheduledSourceNode* n = dynamic_cast<lab::AudioScheduledSourceNode*>(in_node.get());
-    if (n)
-    {
-        if (n->isPlayingOrScheduled()) {
-            printf("Stop %lld\n", node_id.id);
-            n->stop(when);
-        }
-        else {
-            printf("Start %lld\n", node_id.id);
-            n->start(when);
-        }
+    lab::SampledAudioNode* san =
+        dynamic_cast<lab::SampledAudioNode*>(in_node.get());
+    if (san) {
+        san->schedule(0);
+        return;
+    }
+
+    lab::AudioScheduledSourceNode* n =
+        dynamic_cast<lab::AudioScheduledSourceNode*>(in_node.get());
+    if (!n)
+        return;
+    
+    if (n->isPlayingOrScheduled()) {
+        printf("Stop %lld\n", node_id.id);
+        n->stop(when);
+    }
+    else {
+        printf("Start %lld\n", node_id.id);
+        n->start(when);
     }
 }
 
