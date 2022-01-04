@@ -2,6 +2,50 @@
 #ifndef included_noodle_h
 #define included_noodle_h
 
+/*
+The specific issues I ran into, that set me on the path of writing 
+my own graph editor, were:
+
+control over rendering, when it happens, what individual elements 
+look like, special highlighting
+
+specific behaviors for navigating the map, such as scroll wheel 
+zooms centered at the mouse.
+
+Embedding Dear ImGui controls in nodes was not a requirement, because 
+I wanted the graph to be usable at all zoom levels, and Dear ImGui isn't 
+set up for arbitrary coordinate manipulations or pushing and popping a 
+coordinate transform stack (correct me if I'm missed something here)
+
+I needed widgets in columns in nodes, there are various issues around 
+widgets in columns in nodes in the various samples I experimented with 
+before writing my own minimal widgets, most of which pop up an actual 
+Dear ImGui widget, instead of embedding the widget in the node
+
+my graph editor is more "retained" and less "immediate". Embedding a 
+fully Dear ImGui based retained graph in a large application can get 
+extremely complex if the application has special rules about grouping, 
+selection, focus, and so on, as the needs of the graph start conflicting 
+with basic operations of Dear ImGui.
+
+I wanted to experiment with a more data driven approach to the graph, 
+borrowing some ideas from Sequentity's ECS driven architecture to 
+decouple the UI from the data.
+
+I wanted to keep the graph manipulation code separate from the GUI code 
+to make it easier to reuse between applications, and I didn't want to 
+spend time carefully interleaving all the interactions with the graph 
+with every application that uses it. Things like, if you click and drag on 
+something Dear ImGui doesn't know about, such as a wire (or noodle ;)) 
+you need to write special logic to make sure the click doesn't also go 
+to some other Dear ImGui widget, and that the drag stays focused on your 
+wire, and doesn't transfer to an official widget, and so on.
+
+This isn't a knock on the other libraries, they all work well, they just 
+didn't suit what I wanted to do, the way I wanted to do it ;)
+ */
+
+
 #include <atomic>
 #include <cstdint>
 #include <functional>
