@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <cstdint>
 
 #include <imgui.h>
 #include <imgui_internal.h>

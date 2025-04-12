@@ -167,24 +167,33 @@ elseif(WIN32)
         third/nativefiledialog/nfd_win.cpp third/nativefiledialog/nfd_common.c
         third/nativefiledialog/nfd_common.h)
 else()
-  add_definitions(
-    -I/usr/include/gtk-2.0
-    -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include
-    -I/usr/include/pango-1.0
-    -I/usr/include/glib-2.0
-    -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
-    -I/usr/include/harfbuzz
-    -I/usr/include/fribidi
-    -I/usr/include/freetype2
-    -I/usr/include/libpng16
-    -I/usr/include/uuid
-    -I/usr/include/cairo
-    -I/usr/include/pixman-1
-    -I/usr/include/gdk-pixbuf-2.0
-    -I/usr/include/libmount
-    -I/usr/include/blkid
-    -I/usr/include/atk-1.0
-    )
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+  set(PLATFORM_LIBS GLU GL Xcursor Xi X11 pthread dl)
+
+  include_directories(${GTK3_INCLUDE_DIRS})
+  link_directories(${GTK3_LIBRARY_DIRS})
+  # Add other flags to the compiler
+  add_definitions(${GTK3_CFLAGS_OTHER})
+  link_libraries(${GTK3_LIBRARIES} ${PLATFORM_LIBS})
+#  add_definitions(
+#    -I/usr/include/gtk-2.0
+#    -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include
+#    -I/usr/include/pango-1.0
+#    -I/usr/include/glib-2.0
+#    -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+#    -I/usr/include/harfbuzz
+#    -I/usr/include/fribidi
+#    -I/usr/include/freetype2
+#    -I/usr/include/libpng16
+#    -I/usr/include/uuid
+#    -I/usr/include/cairo
+#    -I/usr/include/pixman-1
+#    -I/usr/include/gdk-pixbuf-2.0
+#    -I/usr/include/libmount
+#    -I/usr/include/blkid
+#    -I/usr/include/atk-1.0
+#    )
     # nb: there is a zenity variant, but haven't had a call for it yet
     set(NFD third/nativefiledialog/include/nfd.h
         third/nativefiledialog/nfd_gtk.cpp third/nativefiledialog/nfd_common.c
@@ -199,6 +208,7 @@ add_executable(LabSoundGraphToy
 )
 add_dependencies(LabSoundGraphToy ProcessPlaygroundShaderFiles)
 
+#target_link_libraries(LabSoundGraphToy PRIVATE ${GTK3_LIBRARIES} Xi Xm X11)
 set_target_properties(LabSoundGraphToy PROPERTIES
                       RUNTIME_OUTPUT_DIRECTORY bin)
 
@@ -255,7 +265,9 @@ target_link_libraries(LabSoundGraphToy
     Tiny::OSC
     sokol
     Lab::Sound    
+    ${GTK3_LIBRARIES} ${PLATFORM_LIBS}
     )
+
 
 #-------------------------------------------------------------------------------
 # Installer
